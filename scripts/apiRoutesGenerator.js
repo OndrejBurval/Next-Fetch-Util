@@ -2,20 +2,26 @@ const fs = require('fs');
 const dbJson = require('../db.json');
 
 const keys = Object.keys(dbJson);
+const types = [];
 
-const routeName = (key) => {
-  const route = `'/${key}'`;
-  return route.length > 20 ? route : route + ' '.repeat(20 - route.length);
+
+const buildType = (key, isArray) => {
+  const basic = `"/${key}"`;
+  const query = " | `/" + key + "?${string}`";
+  const arr = isArray ? '| "/' + key + '/:id"' : '';
+  const type = "type " + key + " = " + basic + query + arr + ";";
+  types.push(type);
 }
 
-const routerNameWithQuery = (key) => "`/" + key + "?${string}`";
 
-const apiRoutes = keys.map(key => `${routeName(key)} | ${routerNameWithQuery(key)}`).join('|\n    ');
+keys.forEach(key => {
+  const isArray = Array.isArray(dbJson[key]);
+  buildType(key, isArray)
+});
 
-const content = `
-  type ApiRoutes = 
-    ${apiRoutes};
-  export default ApiRoutes;
+const content = `${types.join('\n')}\n
+type ApiRoutes = ${keys.join(' | ')}; \n
+export default ApiRoutes;
 `;
 
 try {
