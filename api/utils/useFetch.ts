@@ -1,5 +1,5 @@
 import handleErrorStatus from "@/api/utils/handleErrorStatus";
-import type ApiRoute from "@/types/ApiRoutes";
+import type InternalApi from "@/types/InternalApi";
 
 type FetchRequestStatus = "error" | "success";
 
@@ -9,7 +9,7 @@ type FetchResponse<TData> = {
     error: Error | null;
 };
 
-const useFetch = async <TData extends unknown>(api: ApiRoute, options?: RequestInit): Promise<FetchResponse<TData>> => {
+const useFetch = async <TData extends unknown>(api: InternalApi, options?: RequestInit): Promise<FetchResponse<TData>> => {
     try {
         const BASE_URL = process.env.BASE_URL;
         

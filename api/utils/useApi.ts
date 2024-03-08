@@ -1,5 +1,5 @@
 import handleErrorStatus from "@/api/utils/handleErrorStatus";
-import type ApiRoute from "@/types/ApiRoutes";
+import type InternalApi from "@/types/InternalApi";
 
 type FetchRequestStatus = "error" | "success";
 
@@ -9,7 +9,7 @@ type FetchResponse<TData> = {
     error: Error | null;
 };
 
-const $fetch = async <TData extends unknown>(api: ApiRoute, options?: RequestInit): Promise<FetchResponse<TData>> => {
+const $fetch = async <TData extends unknown>(api: InternalApi, options?: RequestInit): Promise<FetchResponse<TData>> => {
     try {
         const BASE_URL = process.env.BASE_URL;
         
@@ -38,13 +38,13 @@ const $fetch = async <TData extends unknown>(api: ApiRoute, options?: RequestIni
 }
 
 const api = {
-    get: async <TData extends unknown>(api: ApiRoute, options?: RequestInit): Promise<FetchResponse<TData>> => {
+    get: async <TData extends unknown>(api: InternalApi, options?: RequestInit): Promise<FetchResponse<TData>> => {
         return $fetch<TData>(api, {
             method: "GET",
             ...options,
         });
     },
-    post: async <TData extends unknown>(api: ApiRoute, body: TData, options?: RequestInit): Promise<FetchResponse<TData>> => {
+    post: async <TData extends unknown>(api: InternalApi, body: TData, options?: RequestInit): Promise<FetchResponse<TData>> => {
         const headers = options?.headers || { "Content-Type": "application/json" };
         return $fetch<TData>(api, {
             method: "POST",
@@ -52,7 +52,7 @@ const api = {
             headers,
         });
     },
-    put: async <TData extends unknown>(api: ApiRoute, body: TData, options?: RequestInit): Promise<FetchResponse<TData>> => {
+    put: async <TData extends unknown>(api: InternalApi, body: TData, options?: RequestInit): Promise<FetchResponse<TData>> => {
         const headers = options?.headers || { "Content-Type": "application/json" };
         return $fetch<TData>(api, {
             method: "PUT",
@@ -60,7 +60,7 @@ const api = {
             headers,
         });
     },
-    delete: async <TData extends unknown>(api: ApiRoute, options?: RequestInit): Promise<FetchResponse<TData>> => {
+    delete: async <TData extends unknown>(api: InternalApi, options?: RequestInit): Promise<FetchResponse<TData>> => {
         return $fetch<TData>(api, {
             method: "DELETE",
             ...options,
