@@ -1,5 +1,5 @@
 type Post = {
-    id: string;
+    id: string | number;
     title: string;
     views: number;
 }
